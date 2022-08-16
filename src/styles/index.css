@@ -1,0 +1,126 @@
+body {
+  font-family: Modeco, sans-serif;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  height: 100%;
+}
+
+code {
+  font-family: Ubuntu, Monaco, Consolas, "Courier New", monospace;
+}
+
+.centered {
+  text-align: center;
+}
+
+.centeredError {
+  color: lightcoral;
+  font-size: 1rem;
+  text-align: center;
+}
+.padded {
+  padding: 24px 0;
+}
+
+.addSynr {
+  /*display: inline !important;*/
+  /*position: absolute !important;*/
+  /*top: 14px !important;*/
+  padding: 6px 12px;
+  margin: 0 28px;
+  color: yellow;
+  font-size: 80%;
+  font-weight: normal;
+}
+
+.command {
+  cursor: pointer;
+}
+
+.yellow {
+  color: #61dafb !important;
+}
+
+.footer2 {
+  margin-bottom: 40px;
+  margin-top: 120px;
+  font-size: 0.8rem;
+}
+
+.congratulations {
+  font-size: 1.4rem;
+  padding: 32px 0 12px;
+  color: yellowgreen;
+}
+
+.idCell {
+  border: 1px solid #0000ff60;
+  background-color: #0000ff40;
+  padding: 18px 0;
+  border-radius: 8px;
+  min-width: 56px;
+  text-align: center;
+}
+
+.idCell.unclaimed {
+  background-color: #ffff00cc;
+  color: black;
+}
+
+.smallerFont {
+  font-size: 60%;
+}
+
+.smallerFont .idCell,
+.inTable {
+  padding: 14px;
+}
+
+.inTable {
+  width: 30% !important;
+}
+
+.allTokens .css-1vmjh4h-MuiTableCell-root {
+  border: none;
+}
+
+.inline {
+  display: inline !important;
+}
+
+.padded {
+  padding: 16px;
+}
+
+.skewedButton {
+  background: yellow !important;
+  color: black !important;
+  transform: skewX(-6deg);
+  border: 1px solid goldenrod;
+  border-radius: 0 !important;
+  /*width: 50%;*/
+  font-size: 1.4rem;
+  max-width: 200px;
+}
+
+.skewedButton:hover {
+  background: gold;
+}
+
+.buyButton {
+  margin-top: 2%;
+  margin-left: 45%;
+  margin-bottom: 2%;;
+}
+
+.centered {
+  margin-right: 40%;
+}
