@@ -50,7 +50,7 @@ function Home() {
 
   useEffect(() => {
     (async () => {
-      if (connectedWallet && !myBalances) {
+      if (connectedWallet && !networkNotSupported && !myBalances) {
         setMyBalances(await balances());
         setMyDeposits(await listDeposits());
       }
