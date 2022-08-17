@@ -202,6 +202,12 @@ function Web3ContextProvider({ config, children }) {
     );
   }
 
+  async function checkIfDepositIdExists(depositId) {
+    const { contracts } = networkDetails;
+    const deposit = await contracts.ByteCity.depositById(depositId);
+    return deposit.tokenType !== 0;
+  }
+
   return (
     <Web3Context.Provider
       value={{
@@ -213,6 +219,7 @@ function Web3ContextProvider({ config, children }) {
         approve: approve,
         newDeposit: newDeposit,
         listDeposits: listDeposits,
+        checkIfDepositIdExists: checkIfDepositIdExists
       }}
     >
       {children}

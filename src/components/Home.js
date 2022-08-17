@@ -32,6 +32,7 @@ function Home() {
     approve,
     newDeposit,
     listDeposits,
+    checkIfDepositIdExists
   } = useContext(Web3Context);
   const { db } = useContext(StoreContext);
   const { networkNotSupported, connectedWallet } = web3NetworkDetails || {};
@@ -67,7 +68,7 @@ function Home() {
     setAmount(value);
   };
 
-  function newDepositId(amount) {
+  async function newDepositId(amount) {
     const depositIds = db.get("depositIds") || {};
     const newId = () => parseInt(1e9 * Math.random());
     // verify that it's unique
@@ -75,8 +76,9 @@ function Home() {
     while (depositIds[id]) {
       id = newId();
     }
-    depositIds[id] = { amount };
-    db.updateOne("depositIds", depositIds);
+    if (await checkIfDepositIdExists(id)) {
+      return newDepositId(amount);
+    }
     return id;
   }
 
@@ -95,6 +97,9 @@ function Home() {
     const tokenType = value === "usdt" ? 1 : 2;
     let tx
     try {
+      if (parseFloat(formatTokenAmount(tokenType, myBalances[value].toString())) < parseFloat(amount)) {
+        return setError('Insufficient funds');
+      }
       // verify if it is approved
       if (!(await isApproved(tokenType, amount))) {
         setMessage("To deposit you must approve the spend...");
@@ -105,12 +110,14 @@ function Home() {
       }
       setMessage("Ready to deposit your tokens");
       // generate a new unique depositId
-      const newId = newDepositId(amount);
+      const newId = await newDepositId(amount);
+      const depositIds = db.get("depositIds");
+      depositIds[newId] = { amount };
+      db.updateOne("depositIds", depositIds);
       // make the deposit
       tx = await newDeposit(tokenType, amount, newId);
       setMessage(progress("Depositing your tokens..."));
       // saving the transaction hash in the local db
-      const depositIds = db.get("depositIds");
       depositIds[newId].txId = tx.hash;
       db.updateOne("depositIds", depositIds);
       // wait for the transaction to be mined

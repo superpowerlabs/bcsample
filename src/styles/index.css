@@ -58,3 +58,7 @@ code {
   margin-top: 8px;
   border: 1px solid #662266 !important;
 }
+
+.error {
+  color: #ff6080 !important;
+}
