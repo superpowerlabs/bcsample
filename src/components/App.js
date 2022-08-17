@@ -9,6 +9,8 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 // internal imports
 import Web3ContextProvider from "../contexts/Web3Context";
+import StoreContextProvider from "../contexts/StoreContext";
+
 import NavigationBar from "./NavigationBar";
 import config from "../config";
 import Home from "./Home";
@@ -31,7 +33,6 @@ function App() {
   }
 
   function getWidth() {
-    // console.log(window.innerWidth)
     return window.innerWidth;
   }
 
@@ -47,20 +48,22 @@ function App() {
   }, []);
 
   return (
-    <Web3ContextProvider config={config}>
-      <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <GlobalStyles
-            styles={{ ul: { margin: 0, padding: 0, listStyle: "none" } }}
-          />
-          <CssBaseline />
-          <NavigationBar />
-          <Routes>
-            <Route exact path="/" element={<Home/>} />
-          </Routes>
-        </ThemeProvider>
-      </BrowserRouter>
-    </Web3ContextProvider>
+    <StoreContextProvider>
+      <Web3ContextProvider config={config}>
+        <BrowserRouter>
+          <ThemeProvider theme={theme}>
+            <GlobalStyles
+              styles={{ ul: { margin: 0, padding: 0, listStyle: "none" } }}
+            />
+            <CssBaseline />
+            <NavigationBar />
+            <Routes>
+              <Route exact path="/" element={<Home />} />
+            </Routes>
+          </ThemeProvider>
+        </BrowserRouter>
+      </Web3ContextProvider>
+    </StoreContextProvider>
   );
 }
 

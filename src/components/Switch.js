@@ -2,16 +2,16 @@ import { isTestnet } from "../config";
 
 async function switchTo() {
   if (isTestnet) {
-  await window.ethereum.request({
-    method: "wallet_switchEthereumChain",
-    params: [{ chainId: "0x" + Number(43113).toString(16) }],
-  });
-} else {
-  await window.ethereum.request({
-    method: "wallet_switchEthereumChain",
-    params: [{ chainId: "0x" + Number(56).toString(16) }],
-  });
-}
+    await window.ethereum.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: "0x" + Number(43113).toString(16) }],
+    });
+  } else {
+    await window.ethereum.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: "0x" + Number(56).toString(16) }],
+    });
+  }
 }
 
 function Switch(props) {

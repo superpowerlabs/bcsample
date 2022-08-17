@@ -7,6 +7,10 @@ import { ethers } from "ethers";
 import { isMobile } from "../utils";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 
+function BN(amount) {
+  return ethers.BigNumber.from(amount.toString() || "0")
+}
+
 function getContracts(config, chainId, web3Provider) {
   let contracts = {};
   let networkNotSupported = false;
@@ -128,12 +132,87 @@ function Web3ContextProvider({ config, children }) {
     })();
   });
 
+  async function balances() {
+    const { contracts, connectedWallet } = networkDetails;
+    return {
+      usdt: await contracts.TetherMock.balanceOf(connectedWallet),
+      usdc: await contracts.USDCoinMock.balanceOf(connectedWallet),
+    };
+  }
+
+  function getToken(tokenType) {
+    const { contracts } = networkDetails;
+    return contracts[tokenType === 1 ? "TetherMock" : "USDCoinMock"];
+  }
+
+  async function formatAmount(token, amount) {
+    const decimals = await token.decimals();
+    amount = parseInt(amount).toString();
+    return BN(amount).mul(BN(1 + "0".repeat(decimals)));
+  }
+
+  async function isApproved(tokenType, amount) {
+    const { contracts, connectedWallet } = networkDetails;
+    const token = getToken(tokenType);
+    amount = await formatAmount(token, amount);
+    const allowance = await token.allowance(
+      connectedWallet,
+      contracts.ByteCity.address
+    );
+    return allowance.gte(amount);
+  }
+
+  async function approve(tokenType, amount) {
+    const { contracts, signer } = networkDetails;
+    const token = getToken(tokenType);
+    amount = await formatAmount(token, amount);
+    return token.connect(signer).approve(contracts.ByteCity.address, amount);
+  }
+
+  function cleanStruct(struct) {
+    let ret = {};
+    for (let key in struct) {
+      if (isNaN(parseInt(key))) {
+        ret[key] = struct[key];
+      }
+    }
+    return ret;
+  }
+
+
+  async function listDeposits() {
+    const { contracts, connectedWallet } = networkDetails;
+    const { ByteCity } = contracts;
+    const depositLength = await ByteCity.depositsAmount(connectedWallet);
+    const deposits = [];
+    for (let i = 0; i < depositLength; i++) {
+      deposits.push(cleanStruct(await ByteCity.depositByIndex(connectedWallet, i)));
+    }
+    return deposits;
+  }
+
+  async function newDeposit(tokenType, amount, depositId) {
+    const { contracts, signer } = networkDetails;
+    const token = getToken(tokenType);
+    amount = await formatAmount(token, amount);
+    return contracts.ByteCity.connect(signer).deposit(
+      tokenType,
+      amount,
+      depositId
+    );
+  }
+
   return (
     <Web3Context.Provider
       value={{
         web3NetworkDetails: networkDetails,
         web3Connect: connect,
         web3IsConnected: isConnected,
+        balances: balances,
+        isApproved: isApproved,
+        approve: approve,
+        newDeposit: newDeposit,
+        listDeposits: listDeposits,
       }}
     >
       {children}

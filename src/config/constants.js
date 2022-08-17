@@ -1,4 +1,4 @@
 module.exports = {
   USDT: 1,
-  USDC: 2
+  USDC: 2,
 };

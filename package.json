@@ -25,6 +25,7 @@
     "fontsource-roboto": "^4.0.0",
     "husky": "^7.0.4",
     "local-storage": "^2.0.0",
+    "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-bootstrap": "^2.1.2",
     "react-bootstrap-validation": "^0.1.11",

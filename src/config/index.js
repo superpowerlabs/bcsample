@@ -1,6 +1,5 @@
-const contracts = Object.assign(require("./deployed.json"));
-
-const abi = Object.assign(require("./ABIs.json").contracts);
+const contracts = require("./deployed.json");
+const abi = require("./ABIs.json").contracts;
 
 for (let c in contracts) {
   for (let x in contracts[c]) {
@@ -25,27 +24,27 @@ if (typeof window !== "undefined") {
 const config = {
   supportedId: {
     43113: {
-        chainId: "0x" + Number(43113).toString(16),
-        chainName: "Fuji",
-        nativeCurrency: {
-          name: "AVAX",
-          symbol: "AVAX",
-          decimals: 18,
-        },
-        rpcUrls: ["https://api.avax-test.network/ext/bc/C/rpc"],
-        blockExplorerUrls: ["https://cchain.explorer.avax-test.network"],
+      chainId: "0x" + Number(43113).toString(16),
+      chainName: "Fuji",
+      nativeCurrency: {
+        name: "AVAX",
+        symbol: "AVAX",
+        decimals: 18,
       },
+      rpcUrls: ["https://api.avax-test.network/ext/bc/C/rpc"],
+      blockExplorerUrls: ["https://cchain.explorer.avax-test.network"],
+    },
     1337: {
-          chainId: "0x" + Number(1337).toString(16),
-          chainName: "Localhost 8545",
-          nativeCurrency: {
-            name: "ETH",
-            symbol: "ETH",
-            decimals: 18,
-          },
-          rpcUrls: ["http://localhost:8545"],
-          blockExplorerUrls: [],
-        },
+      chainId: "0x" + Number(1337).toString(16),
+      chainName: "Localhost 8545",
+      nativeCurrency: {
+        name: "ETH",
+        symbol: "ETH",
+        decimals: 18,
+      },
+      rpcUrls: ["http://localhost:8545"],
+      blockExplorerUrls: [],
+    },
   },
   contracts,
   abi,
